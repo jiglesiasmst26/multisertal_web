@@ -24,6 +24,15 @@ cd web/src
 python3 build.py
 ```
 
+## Publicación en Netlify
+
+El sitio está vinculado a Netlify: cada cambio que se sube a la rama `main` se publica solo.
+`netlify.toml` le indica a Netlify que publique únicamente la carpeta `web/dist/`
+(la carpeta `sistema/` no se publica).
+
+Para cambiar la web: editar los archivos de `web/src/`, correr `python3 build.py` dentro de esa carpeta
+y subir los cambios (incluido el nuevo `web/dist/index.html`).
+
 ## Sistema (`sistema/`)
 
 - `sistema/index.html` — copia del Sistema MST tal como estaba publicado al momento de este respaldo.

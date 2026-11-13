@@ -1,0 +1,4 @@
+# Netlify publica solo la página web. La carpeta "sistema/" NO se publica.
+[build]
+  publish = "web/dist"
+  command = ""
