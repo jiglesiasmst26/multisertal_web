@@ -147,4 +147,10 @@ _csp="script-src 'self' "+" ".join(_hs)+"; object-src 'none'; base-uri 'self'"
 _hdr="/*\n  Content-Security-Policy: "+_csp+"\n"
 for _d in [_os.path.join(_H,'..','dist'),_os.path.join(_H,'..','..')]:
     open(_os.path.join(_d,'_headers'),'w').write(_hdr)
+import json as _json
+# Vercel: publicar solo web/dist, bloquear sistema/ y fuentes, misma CSP.
+_vc={"$schema":"https://openapi.vercel.sh/vercel.json","framework":None,"buildCommand":"","installCommand":"","outputDirectory":"web/dist",
+ "redirects":[{"source":"/sistema/:path*","destination":"/","permanent":False},{"source":"/web/:path*","destination":"/","permanent":False}],
+ "headers":[{"source":"/(.*)","headers":[{"key":"Content-Security-Policy","value":_csp},{"key":"X-Content-Type-Options","value":"nosniff"}]}]}
+open(_os.path.join(_H,'..','..','vercel.json'),'w').write(_json.dumps(_vc,indent=2,ensure_ascii=False)+"\n")
 print("csp",len(_hs),"scripts")

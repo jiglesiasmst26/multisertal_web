@@ -24,7 +24,13 @@ cd web/src
 python3 build.py
 ```
 
-## Publicación en Netlify
+## Publicación en Vercel (actual)
+
+El sitio está en Vercel, vinculado a este repositorio: cada cambio que se sube a `main` se publica solo.
+`vercel.json` (lo genera `build.py`) indica publicar solo `web/dist/`, bloquea `/sistema/` y las fuentes,
+y aplica la misma política de seguridad (CSP).
+
+## Publicación en Netlify (anterior)
 
 El sitio está vinculado a Netlify: cada cambio que se sube a la rama `main` se publica solo.
 `netlify.toml` le indica a Netlify que publique únicamente la carpeta `web/dist/`
