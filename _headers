@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: script-src 'self' 'sha256-8DVzh0iqjsDeLxh57I19wmjc0O3WiIEvRg3NXhmc+JI=' 'sha256-uwrb8c6VsDupyg1xISAXVs/+yk8+D5WQQ5IJ2CfRsx0=' 'sha256-A0k9EM/C8NaydhZq+Y/Y6aCP7Hnh3bC1wlIWrAHLTpQ=' 'sha256-P8CIPwV0MBsfaPt4RYzEttVteUeiD7ND4l0hzh8Ff1s='; object-src 'none'; base-uri 'self'
+  Content-Security-Policy: script-src 'self' 'sha256-8DVzh0iqjsDeLxh57I19wmjc0O3WiIEvRg3NXhmc+JI=' 'sha256-uwrb8c6VsDupyg1xISAXVs/+yk8+D5WQQ5IJ2CfRsx0=' 'sha256-A0k9EM/C8NaydhZq+Y/Y6aCP7Hnh3bC1wlIWrAHLTpQ=' 'sha256-T45aRHzgo8YIpTqHN1wrmgFmSMywsIIbOmzSeu+3TbU='; object-src 'none'; base-uri 'self'

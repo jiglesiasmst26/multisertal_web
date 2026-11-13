@@ -130,7 +130,7 @@ page=S_.replace("<!--MSTIMG-->",'<style id="mstimg">'+IMGCSS+'</style>',1).repla
 _SK=('<!doctype html><html lang="es"><head><meta charset="utf-8">'
  '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
  '<meta name="description" content="MST Multiservicios Talca: arriendo de camiones pluma, venta de contenedores marítimos y módulos a medida, tubería HDPE y reparación de grúas.">'
- '<meta name="theme-color" content="#ffffff">'
+ '<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#171b1f">'
  '<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>'
  '</head><body>')
 page=_SK+page+'</body></html>'

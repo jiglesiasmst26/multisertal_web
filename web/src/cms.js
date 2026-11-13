@@ -40,7 +40,7 @@ function applyImgs(img){let css="";Object.entries(img||{}).forEach(([k,v])=>{if(
 /* aplicar lo guardado */
 T.forEach(e=>{const x=D.t[e.dataset.ck];if(x&&norm(x.o)==norm(e.dataset.co))e.innerHTML=clean(x.h)});
 const isClip=e=>/text/.test(getComputedStyle(e).backgroundClip||getComputedStyle(e).webkitBackgroundClip||"");
-function setCol(e,c){if(c){e.style.color=c;e.style.setProperty("-webkit-text-fill-color",c);if(e.classList.contains("hl")||isClip(e)){e.style.backgroundImage="none"}}else{e.style.removeProperty("color");e.style.removeProperty("-webkit-text-fill-color");e.style.removeProperty("background-image")}}
+function setCol(e,c){const _l=(h=>{h=String(h||"").replace("#","");if(h.length==3)h=h.replace(/./g,"$&$&");if(!/^[0-9a-f]{6}$/i.test(h))return .5;const v=[0,2,4].map(i=>{let x=parseInt(h.substr(i,2),16)/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*v[0]+.7152*v[1]+.0722*v[2]})(c);if(c&&_l>.8)e.dataset.cl="w";else if(c&&_l<.03)e.dataset.cl="k";else delete e.dataset.cl;if(c){e.style.color=c;e.style.setProperty("-webkit-text-fill-color",c);if(e.classList.contains("hl")||isClip(e)){e.style.backgroundImage="none"}}else{e.style.removeProperty("color");e.style.removeProperty("-webkit-text-fill-color");e.style.removeProperty("background-image")}}
 function applyCols(col){T.forEach(e=>setCol(e,(col||{})[e.dataset.ck]||""))}
 renderLists(D.lists);applyCfg(D.cfg);applyImgs(D.img);applyCols(D.col);
 /* ---------- edición ---------- */
