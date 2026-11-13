@@ -126,4 +126,4 @@ DATA=json.load(open(_dp)) if os.path.exists(_dp) else {}
 _safe=lambda x:x.replace("<","\\u003c")
 _js=lambda o:_safe(json.dumps(o,ensure_ascii=False,separators=(",",":")))
 page=S_.replace("<!--MSTIMG-->",'<style id="mstimg">'+IMGCSS+'</style>',1).replace("<!--MSTDATA-->",'<script type="application/json" id="mstdata">'+_js(DATA)+'</script>',1).replace("<!--MSTSRC-->",'<script type="application/json" id="mstsrc">'+_js(S_)+'</script>',1)
-open(_os.path.join(_H,'..','dist','index.html'),'w').write(page);print("ok",len(page))
+open(_os.path.join(_H,'..','dist','index.html'),'w').write(page);open(_os.path.join(_H,'..','..','index.html'),'w').write(page);print("ok",len(page))

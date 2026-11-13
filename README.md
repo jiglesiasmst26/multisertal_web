@@ -29,9 +29,11 @@ python3 build.py
 El sitio está vinculado a Netlify: cada cambio que se sube a la rama `main` se publica solo.
 `netlify.toml` le indica a Netlify que publique únicamente la carpeta `web/dist/`
 (la carpeta `sistema/` no se publica).
+También hay una copia de la página en `index.html` (raíz) y un archivo `_redirects`, como respaldo por si
+Netlify estuviera configurado para publicar la raíz del repositorio: en ese caso tampoco se puede entrar a `sistema/`.
 
 Para cambiar la web: editar los archivos de `web/src/`, correr `python3 build.py` dentro de esa carpeta
-y subir los cambios (incluido el nuevo `web/dist/index.html`).
+y subir los cambios (incluido el nuevo `web/dist/index.html`). `build.py` también actualiza la copia `index.html` de la raíz.
 
 ## Sistema (`sistema/`)
 

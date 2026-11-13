@@ -1,4 +1,15 @@
-# Netlify publica solo la página web. La carpeta "sistema/" NO se publica.
+# Netlify publica solo la página web (carpeta web/dist).
 [build]
   publish = "web/dist"
-  command = ""
+
+# Respaldo por si Netlify publica la raíz: nunca mostrar el sistema ni las fuentes.
+[[redirects]]
+  from = "/sistema/*"
+  to = "/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/web/src/*"
+  to = "/"
+  status = 301
+  force = true
