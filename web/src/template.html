@@ -469,7 +469,7 @@ const small=matchMedia("(max-width:560px)").matches;if(st==="1")open(true);else 
 })();
 </script>
 <script>
-(()=>{const p=document.getElementById("fl_p"),a=document.getElementById("fl_a"),msg=document.getElementById("fl_msg");if(!p)return;const C=[...document.querySelectorAll(".flc")];
+(()=>{const p=document.getElementById("fl_p"),a=document.getElementById("fl_a"),msg=document.getElementById("fl_msg");if(!p)return;const fm=p.closest("form");if(fm)fm.addEventListener("submit",e=>e.preventDefault());const C=[...document.querySelectorAll(".flc")];
 const run=()=>{const w=parseFloat(String(p.value).replace(",",".")),h=parseFloat(String(a.value).replace(",","."));const any=w>0||h>0;let n=0;
  C.forEach(c=>{const ok=any&&(!(w>0)||+c.dataset.cap>=w)&&(!(h>0)||+c.dataset.alt>=h);if(ok)n++;c.classList.toggle("ok",ok);c.classList.toggle("no",any&&!ok);c.querySelector(".flok").hidden=!ok});
  msg.hidden=!any;msg.textContent=!any?"":n?(n==1?"1 camión sirve para lo que buscas.":n+" camiones sirven para lo que buscas."):"Ninguno de nuestros camiones cubre esa combinación de peso y altura a la vez. Escríbenos y buscamos una solución.";msg.style.color=n?"":"#c62828"};

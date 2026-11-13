@@ -39,3 +39,11 @@ y subir los cambios (incluido el nuevo `web/dist/index.html`). `build.py` tambi�
 
 - `sistema/index.html` — copia del Sistema MST tal como estaba publicado al momento de este respaldo.
   Los datos (clientes, ventas, flota, etc.) no están aquí: viven en la base de datos del sistema.
+
+## Barra y sello de Netlify
+
+`build.py` genera también un archivo `_headers` con una política de seguridad (CSP) que solo permite
+ejecutar los scripts propios de la página (identificados por su huella `sha256`). Como efecto, Netlify
+no puede inyectar su barra de pre-lanzamiento ni el sello "Powered by Netlify".
+Si se edita el HTML a mano sin correr `build.py`, las huellas dejan de coincidir y la página deja de
+funcionar en Netlify: siempre regenerar con `python3 build.py` antes de subir cambios.

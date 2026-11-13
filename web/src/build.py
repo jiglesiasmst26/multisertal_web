@@ -70,7 +70,7 @@ def fleet_html():
  <p class="flok" hidden>✓ Sirve para tu maniobra</p>
  <a class="flb" data-wa="{e(f"Hola, quiero consultar por el camión pluma {m} {cf} ({y}) con grúa {g}. Mi maniobra es: ")}" href="https://wa.me/{WA}" target="_blank" rel="noopener">Consultar este equipo</a></article>''' for i,(m,cf,y,g,pr,a,c) in enumerate(FLEET))
     return f'''<section class="fleet" data-nocms aria-labelledby="flt"><div class="flhd"><div><small>Nuestra flota</small><h3 id="flt">5 camiones pluma Volvo, de 5,8 a 16 toneladas</h3><p>Revisa qué equipo se ajusta a tu maniobra. Escribe el peso y la altura y te marcamos los camiones que sirven.</p></div>
- <form class="flf" onsubmit="return false"><label><span>Peso a levantar (t)</span><input id="fl_p" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Ej: 4"></label><label><span>Altura necesaria (m)</span><input id="fl_a" type="number" inputmode="decimal" min="0" step="1" placeholder="Ej: 15"></label></form></div>
+ <form class="flf"><label><span>Peso a levantar (t)</span><input id="fl_p" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Ej: 4"></label><label><span>Altura necesaria (m)</span><input id="fl_a" type="number" inputmode="decimal" min="0" step="1" placeholder="Ej: 15"></label></form></div>
  <p class="flmsg" id="fl_msg" hidden></p><div class="flgrid">{cards}</div>
  <p class="flnote">La capacidad máxima se logra con la pluma recogida y cerca del camión; a mayor distancia la capacidad baja. Cuéntanos tu maniobra y confirmamos el equipo con su tabla de carga.</p></section>'''
 CONT=[("20'","20 pies estándar","6,06 × 2,44 × 2,59 m","≈ 33 m³","Bodega de obra, guardar herramientas o insumos"),
@@ -126,4 +126,25 @@ DATA=json.load(open(_dp)) if os.path.exists(_dp) else {}
 _safe=lambda x:x.replace("<","\\u003c")
 _js=lambda o:_safe(json.dumps(o,ensure_ascii=False,separators=(",",":")))
 page=S_.replace("<!--MSTIMG-->",'<style id="mstimg">'+IMGCSS+'</style>',1).replace("<!--MSTDATA-->",'<script type="application/json" id="mstdata">'+_js(DATA)+'</script>',1).replace("<!--MSTSRC-->",'<script type="application/json" id="mstsrc">'+_js(S_)+'</script>',1)
-open(_os.path.join(_H,'..','dist','index.html'),'w').write(page);open(_os.path.join(_H,'..','..','index.html'),'w').write(page);print("ok",len(page))
+# Página completa para Netlify (claude.ai agrega este esqueleto solo; Netlify no).
+_SK=('<!doctype html><html lang="es"><head><meta charset="utf-8">'
+ '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+ '<meta name="description" content="MST Multiservicios Talca: arriendo de camiones pluma, venta de contenedores marítimos y módulos a medida, tubería HDPE y reparación de grúas.">'
+ '<meta name="theme-color" content="#ffffff">'
+ '<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>'
+ '</head><body>')
+page=_SK+page+'</body></html>'
+open(_os.path.join(_H,'..','dist','index.html'),'w',encoding='utf-8').write(page);open(_os.path.join(_H,'..','..','index.html'),'w',encoding='utf-8').write(page);print("ok",len(page))
+# Netlify: CSP que solo permite los scripts propios de la página (por hash).
+# Efecto: Netlify no puede inyectar su barra/sello (scripts en línea sin hash).
+import hashlib as _hl,base64 as _b64
+_hs=[]
+for _a,_b in re.findall(r'<script([^>]*)>(.*?)</script>',page,re.S):
+    if 'type=' in _a and 'javascript' not in _a and 'module' not in _a: continue
+    if 'src=' in _a: continue
+    _hs.append("'sha256-"+_b64.b64encode(_hl.sha256(_b.encode('utf-8')).digest()).decode()+"'")
+_csp="script-src 'self' "+" ".join(_hs)+"; object-src 'none'; base-uri 'self'"
+_hdr="/*\n  Content-Security-Policy: "+_csp+"\n"
+for _d in [_os.path.join(_H,'..','dist'),_os.path.join(_H,'..','..')]:
+    open(_os.path.join(_d,'_headers'),'w').write(_hdr)
+print("csp",len(_hs),"scripts")
