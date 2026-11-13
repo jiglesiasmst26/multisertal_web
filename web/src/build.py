@@ -130,10 +130,13 @@ page=S_.replace("<!--MSTIMG-->",'<style id="mstimg">'+IMGCSS+'</style>',1).repla
 _SK=('<!doctype html><html lang="es"><head><meta charset="utf-8">'
  '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
  '<meta name="description" content="MST Multiservicios Talca: arriendo de camiones pluma, venta de contenedores marítimos y módulos a medida, tubería HDPE y reparación de grúas.">'
+ '<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%22380%20190%20500%20515%22%3E%3Crect%20x%3D%22380%22%20y%3D%22190%22%20width%3D%22500%22%20height%3D%22515%22%20rx%3D%2290%22%20fill%3D%22%23ffffff%22/%3E%3Cpath%20fill%3D%22%2315191d%22%20fill-rule%3D%22evenodd%22%20d%3D%22M418%20336L631%20224L843%20336L690%20418V640L631%20671L571%20640V418ZM540%20352L631%20303L722%20352L631%20402Z%22/%3E%3Cpath%20fill%3D%22%231452e0%22%20d%3D%22M421%20373L517%20425V627L421%20580ZM744%20425L840%20373V580L744%20627Z%22/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">'
+ '<meta property="og:type" content="website"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="MST Multiservicios Talca"><meta property="og:title" content="MST · Camiones pluma, contenedores y tubería HDPE en Talca"><meta property="og:description" content="Arriendo de camiones pluma con operador, venta de contenedores marítimos y módulos a medida, tubería HDPE y reparación de grúas. Cotiza por WhatsApp.">'
  '<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#171b1f">'
  '<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>'
  '</head><body>')
-page=_SK+page+'</body></html>'
+import re as _re
+page=_SK+_re.sub(r'<script type="application/json" id="mstsrc">.*?</script>','',page,count=1,flags=_re.S)+'</body></html>'
 open(_os.path.join(_H,'..','dist','index.html'),'w',encoding='utf-8').write(page);open(_os.path.join(_H,'..','..','index.html'),'w',encoding='utf-8').write(page);print("ok",len(page))
 # Netlify: CSP que solo permite los scripts propios de la página (por hash).
 # Efecto: Netlify no puede inyectar su barra/sello (scripts en línea sin hash).
@@ -143,14 +146,14 @@ for _a,_b in re.findall(r'<script([^>]*)>(.*?)</script>',page,re.S):
     if 'type=' in _a and 'javascript' not in _a and 'module' not in _a: continue
     if 'src=' in _a: continue
     _hs.append("'sha256-"+_b64.b64encode(_hl.sha256(_b.encode('utf-8')).digest()).decode()+"'")
-_csp="script-src 'self' "+" ".join(_hs)+"; object-src 'none'; base-uri 'self'"
-_hdr="/*\n  Content-Security-Policy: "+_csp+"\n"
+_csp="script-src 'self' "+" ".join(_hs)+"; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://wa.me"
+_hdr="/*\n  Content-Security-Policy: "+_csp+"\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()\n  X-Frame-Options: DENY\n"
 for _d in [_os.path.join(_H,'..','dist'),_os.path.join(_H,'..','..')]:
     open(_os.path.join(_d,'_headers'),'w').write(_hdr)
 import json as _json
 # Vercel: publicar solo web/dist, bloquear sistema/ y fuentes, misma CSP.
 _vc={"$schema":"https://openapi.vercel.sh/vercel.json","framework":None,"buildCommand":"","installCommand":"","outputDirectory":"web/dist",
  "redirects":[{"source":"/sistema/:path*","destination":"/","permanent":False},{"source":"/web/:path*","destination":"/","permanent":False}],
- "headers":[{"source":"/(.*)","headers":[{"key":"Content-Security-Policy","value":_csp},{"key":"X-Content-Type-Options","value":"nosniff"}]}]}
+ "headers":[{"source":"/(.*)","headers":[{"key":"Content-Security-Policy","value":_csp},{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"},{"key":"Permissions-Policy","value":"camera=(), microphone=(), geolocation=(), payment=()"},{"key":"X-Frame-Options","value":"DENY"},{"key":"Strict-Transport-Security","value":"max-age=63072000; includeSubDomains"}]}]}
 open(_os.path.join(_H,'..','..','vercel.json'),'w').write(_json.dumps(_vc,indent=2,ensure_ascii=False)+"\n")
 print("csp",len(_hs),"scripts")
